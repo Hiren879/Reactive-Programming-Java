@@ -49,4 +49,34 @@ public class FluxAndMonoServiceTest {
 		var mono = fluxAndMonoService.getCountryFlapMapMono();
 		StepVerifier.create(mono).expectNextCount(1).verifyComplete();
 	}
+	
+	@Test
+	public void test_getCountryMonoFlatMapMany() {
+		var mono = fluxAndMonoService.getCountryMonoFlatMapMany();
+		StepVerifier.create(mono).expectNextCount(5).verifyComplete();
+	}
+	
+	@Test
+	public void test_getCountryFluxTransform() {
+		var flux = fluxAndMonoService.getCountryFluxTransform(5);
+		StepVerifier.create(flux).expectNextCount(2).verifyComplete();
+	}
+	
+	@Test
+	public void test_getCountryFluxConcate() {
+		var flux = fluxAndMonoService.getCountryFluxConcate().log();
+		StepVerifier.create(flux).expectNextCount(5).verifyComplete();
+	}
+	
+	@Test
+	public void test_getCountryFluxMerge() {
+		var flux = fluxAndMonoService.getCountryFluxMerge().log();
+		StepVerifier.create(flux).expectNextCount(5).verifyComplete();
+	}
+	
+	@Test
+	public void test_getFluxCountryZip() {
+		var flux = fluxAndMonoService.getFluxCountryZip();
+		StepVerifier.create(flux).expectNextCount(2).verifyComplete();
+	}
 }

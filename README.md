@@ -160,3 +160,22 @@ More example with other stream functions with flux & mono :
 	}
 ```
 
+Below is one interesting example where we are passing whole **function** as transformation parameter.
+
+```
+		/**
+	 * Creating a function for the flux which takes the flux and returns the flux.
+	 * 
+	 * @param number
+	 * @return
+	 */
+	public Flux<String> getCountryFluxTransform(int number) {
+		// create a function for a flux
+		Function<Flux<String>, Flux<String>> transformFluxFunc = f -> f.filter(s -> s.length() > number);
+
+		return Flux.fromIterable(List.of("India", "Dubai", "USA", "Germany", "France"))
+				.transform(transformFluxFunc)
+				.defaultIfEmpty("default_data") // case when there is not match
+				.log();
+	}
+```
