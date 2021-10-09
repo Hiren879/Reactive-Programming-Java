@@ -179,3 +179,34 @@ Below is one interesting example where we are passing whole **function** as tran
 				.log();
 	}
 ```
+
+### Handling exception in Reactive Programming
+
+1. onErrorReturn : return value when error occurred
+```
+public Flux<String> getCountryOnErrorReturn() {
+		return Flux.just("India", "USA", "UK")
+				.concatWith(
+						Flux.error
+							(new RuntimeException("Exception !!")
+					))
+				.onErrorReturn("China");
+	}
+```
+2. onErrorContinue : continue when error occurred.
+```
+public Flux<String> getCountryOnErrorContinue() {
+		return Flux.just("India", "USA", "uk").map(s -> {
+			if (s.equalsIgnoreCase("USA")) {
+				throw new RuntimeException("Super power is detected !!");
+			} else {
+				return s.toUpperCase();
+			}
+		}).onErrorContinue((e, c) -> {
+			System.out.println("e : " + e.getMessage());
+			System.out.println("c : " + c);
+		});
+	}
+```
+
+

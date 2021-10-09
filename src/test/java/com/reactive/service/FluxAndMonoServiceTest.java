@@ -79,4 +79,20 @@ public class FluxAndMonoServiceTest {
 		var flux = fluxAndMonoService.getFluxCountryZip();
 		StepVerifier.create(flux).expectNextCount(2).verifyComplete();
 	}
+	
+	@Test
+	public void test_getCountryOnErrorReturn() {
+		var flux = fluxAndMonoService.getCountryOnErrorReturn().log();
+		StepVerifier.create(flux)
+			.expectNext("India", "USA", "UK", "China")
+			.verifyComplete();
+	}
+	
+	@Test
+	public void test_getCountryOnErrorContinue() {
+		var flux = fluxAndMonoService.getCountryOnErrorContinue().log();
+		StepVerifier.create(flux)
+			.expectNext("INDIA", "UK")
+			.verifyComplete();
+	}
 }
