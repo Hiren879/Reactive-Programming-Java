@@ -108,6 +108,10 @@ public class FluxAndMonoService {
 				.onErrorReturn("China");
 	}
 
+	/**
+	 * Continue with the BAU after handling the exception.
+	 * @return
+	 */
 	public Flux<String> getCountryOnErrorContinue() {
 		return Flux.just("India", "USA", "uk").map(s -> {
 			if (s.equalsIgnoreCase("USA")) {
@@ -120,6 +124,42 @@ public class FluxAndMonoService {
 			System.out.println("c : " + c);
 		});
 	}
+	
+	/**
+	 * Used to map exception to custom/business exception.
+	 * It will stop giving the data once exception is thrown.
+	 * @return
+	 */
+	public Flux<String> getCountryOnErrorMap() {
+		return Flux.just("India", "USA", "uk").map(s -> {
+			if (s.equalsIgnoreCase("USA")) {
+				throw new RuntimeException("Super power is detected !!");
+			} else {
+				return s.toUpperCase();
+			}
+		}).onErrorMap(throwable -> {
+			System.out.println("e : " + throwable.getMessage());
+			return new IllegalStateException("My custom exception !!");
+		});
+	}
+	
+	/**
+	 * Just like try/catch block.
+	 * @return
+	 */
+	public Flux<String> getCountryDoOnError() {
+		return Flux.just("India", "USA", "uk").map(s -> {
+			if (s.equalsIgnoreCase("USA")) {
+				throw new RuntimeException("Super power is detected !!");
+			} else {
+				return s.toUpperCase();
+			}
+		}).doOnError(throwable -> {
+			System.out.println("CustomError : " + throwable.getMessage());
+		});
+	}
+	
+	
 
 	public static void main(String[] args) {
 		FluxAndMonoService fluxAndMonoService = new FluxAndMonoService();

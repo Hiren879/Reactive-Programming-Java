@@ -95,4 +95,23 @@ public class FluxAndMonoServiceTest {
 			.expectNext("INDIA", "UK")
 			.verifyComplete();
 	}
+	
+	@Test
+	public void test_getCountryOnErrorMap() {
+		var flux = fluxAndMonoService.getCountryOnErrorMap().log();
+		StepVerifier.create(flux)
+			.expectNext("INDIA")
+			.expectError(IllegalStateException.class)
+			.verify();
+	}
+	
+	@Test
+	public void test_getCountryDoOnError() {
+		var flux = fluxAndMonoService.getCountryDoOnError().log();
+		StepVerifier.create(flux)
+			.expectNext("INDIA", "UK")
+			.expectError(RuntimeException.class)
+			.verify();
+			
+	}
 }
