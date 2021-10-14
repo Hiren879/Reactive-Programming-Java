@@ -5,6 +5,7 @@ import java.util.List;
 import com.book.model.BookInfo;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class BookInfoService {
 
@@ -16,4 +17,8 @@ public class BookInfoService {
 		return Flux.fromIterable(books);
 	}
 
+	public Mono<BookInfo> getBookById(long bookId) {
+		var book = new BookInfo(1L, "Book One", "Author One", "12121212");
+		return Mono.just(book);
+	}
 }
